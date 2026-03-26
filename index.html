@@ -1,0 +1,741 @@
+<!-- =====================================================
+     मराठी भाषा दिन Timeline - Blogger HTML Widget Code
+     Paste this in: Blogger > Layout > Add a Gadget > HTML/JavaScript
+     OR in a New Post > Switch to HTML view and paste
+     ===================================================== -->
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;600;700;900&family=Rozha+One&display=swap" rel="stylesheet"/>
+
+<style>
+/* ── Scoped to .mbd-wrap so Blogger theme styles don't clash ── */
+
+.mbd-wrap {
+  font-family: 'Noto Serif Devanagari', serif;
+  background: #FFF3E0;
+  color: #000000;
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.mbd-wrap * {
+  box-sizing: border-box;
+  color: #000000;
+}
+
+/* CSS Variables */
+.mbd-wrap {
+  --mbd-saffron: #FF6B00;
+  --mbd-gold:    #F4A020;
+  --mbd-dark:    #FFF3E0;
+}
+
+/* Background glow */
+.mbd-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(255,107,0,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(255,165,0,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,200,80,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pattern overlay */
+.mbd-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,107,0,0.02) 40px, rgba(255,107,0,0.02) 41px),
+    repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255,107,0,0.02) 40px, rgba(255,107,0,0.02) 41px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mbd-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HERO ── */
+.mbd-hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+
+.mbd-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #FF6B00, #F4A020);
+  color: #000000 !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 6px 20px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  animation: mbd-fadeDown 0.8s ease both;
+}
+
+.mbd-title {
+  font-family: 'Rozha One', serif;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 1.1;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000;
+  animation: mbd-fadeDown 0.8s 0.2s ease both;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.mbd-subtitle {
+  font-family: 'Tiro Devanagari Marathi', serif;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: #000000 !important;
+  margin-top: 16px;
+  letter-spacing: 1px;
+  animation: mbd-fadeDown 0.8s 0.4s ease both;
+}
+
+.mbd-date-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 30px;
+  border: 1px solid rgba(255,107,0,0.4);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #000000 !important;
+  letter-spacing: 2px;
+  animation: mbd-fadeDown 0.8s 0.6s ease both;
+  background: rgba(255,107,0,0.07);
+}
+
+/* ── DIVIDER ── */
+.mbd-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 40px auto;
+  max-width: 600px;
+  padding: 0 20px;
+  animation: mbd-fadeIn 1s 0.8s ease both;
+}
+.mbd-divider::before,
+.mbd-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #FF6B00, transparent);
+}
+.mbd-divider-icon {
+  font-size: 1.4rem;
+}
+
+/* ── FILTERS ── */
+.mbd-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 20px 40px;
+  animation: mbd-fadeIn 1s 1s ease both;
+}
+
+.mbd-filter-btn {
+  background: transparent;
+  border: 1px solid rgba(255,107,0,0.3);
+  color: #000000 !important;
+  padding: 7px 20px;
+  border-radius: 30px;
+  font-family: 'Noto Serif Devanagari', serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mbd-filter-btn:hover,
+.mbd-filter-btn.mbd-active {
+  background: #FF6B00;
+  border-color: #FF6B00;
+  color: #000000 !important;
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(255,107,0,0.4);
+}
+
+/* ── TIMELINE ── */
+.mbd-timeline {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 20px 80px;
+  position: relative;
+}
+
+.mbd-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #FF6B00 5%, #FF6B00 95%, transparent);
+  transform: translateX(-50%);
+}
+
+@media (max-width: 640px) {
+  .mbd-timeline::before { left: 28px; }
+}
+
+/* Era labels */
+.mbd-era {
+  text-align: center;
+  margin: 50px 0 30px;
+  position: relative;
+  z-index: 2;
+}
+.mbd-era span {
+  background: #FF6B00;
+  color: #000000 !important;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 5px 18px;
+  border-radius: 20px;
+}
+
+/* Events */
+.mbd-event {
+  display: flex;
+  align-items: flex-start;
+  margin: 32px 0;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.mbd-event.mbd-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mbd-event:nth-child(odd) { flex-direction: row-reverse; }
+
+@media (max-width: 640px) {
+  .mbd-event,
+  .mbd-event:nth-child(odd) {
+    flex-direction: row;
+    padding-left: 60px;
+  }
+}
+
+/* Dot */
+.mbd-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FF6B00;
+  border: 3px solid #FFF3E0;
+  box-shadow: 0 0 0 2px #FF6B00, 0 0 15px rgba(255,107,0,0.5);
+  flex-shrink: 0;
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.mbd-event:hover .mbd-dot {
+  background: #F4A020;
+  box-shadow: 0 0 0 3px #F4A020, 0 0 25px rgba(244,160,32,0.7);
+  transform: translateX(-50%) scale(1.3);
+}
+
+@media (max-width: 640px) {
+  .mbd-dot { left: 28px; top: 16px; }
+}
+
+/* Card */
+.mbd-card {
+  width: calc(50% - 30px);
+  background: linear-gradient(135deg, rgba(255,248,238,0.05), rgba(255,107,0,0.06));
+  border: 1px solid rgba(255,107,0,0.2);
+  border-radius: 12px;
+  padding: 20px 24px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.mbd-card:hover {
+  background: linear-gradient(135deg, rgba(255,248,238,0.1), rgba(255,107,0,0.12));
+  border-color: rgba(255,107,0,0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(255,107,0,0.15);
+}
+
+@media (max-width: 640px) {
+  .mbd-card { width: 100%; }
+}
+
+/* Card arrows */
+.mbd-event:nth-child(even) .mbd-card::after {
+  content: '';
+  position: absolute;
+  right: -8px; top: 20px;
+  width: 16px; height: 16px;
+  background: linear-gradient(135deg, rgba(255,248,238,0.05), rgba(255,107,0,0.06));
+  border-right: 1px solid rgba(255,107,0,0.2);
+  border-bottom: 1px solid rgba(255,107,0,0.2);
+  transform: rotate(-45deg);
+}
+.mbd-event:nth-child(odd) .mbd-card::after {
+  content: '';
+  position: absolute;
+  left: -8px; top: 20px;
+  width: 16px; height: 16px;
+  background: linear-gradient(135deg, rgba(255,248,238,0.05), rgba(255,107,0,0.06));
+  border-left: 1px solid rgba(255,107,0,0.2);
+  border-top: 1px solid rgba(255,107,0,0.2);
+  transform: rotate(-45deg);
+}
+@media (max-width: 640px) {
+  .mbd-card::after, .mbd-event:nth-child(odd) .mbd-card::after { display: none; }
+}
+
+/* Card text */
+.mbd-year {
+  font-family: 'Rozha One', serif;
+  font-size: 1.8rem;
+  color: #000000 !important;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.mbd-cat {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #000000 !important;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+.mbd-event-title {
+  font-family: 'Tiro Devanagari Marathi', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #000000 !important;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.mbd-desc {
+  font-size: 0.82rem;
+  color: #000000 !important;
+  line-height: 1.7;
+  font-family: 'Noto Serif Devanagari', serif;
+}
+.mbd-icon {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-size: 1.4rem;
+  opacity: 0.5;
+}
+
+/* ── FOOTER ── */
+.mbd-footer {
+  text-align: center;
+  padding: 40px 20px 60px;
+}
+.mbd-footer-text {
+  font-family: 'Tiro Devanagari Marathi', serif;
+  font-size: 1.2rem;
+  color: #000000 !important;
+  margin-bottom: 8px;
+}
+.mbd-footer-sub {
+  font-size: 0.75rem;
+  color: #000000 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ── SCROLL TO TOP ── */
+.mbd-scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 44px;
+  height: 44px;
+  background: #FF6B00;
+  color: #000000 !important;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+.mbd-scroll-top.mbd-visible { opacity: 1; pointer-events: all; }
+.mbd-scroll-top:hover { transform: scale(1.1); }
+
+/* ── Floating diyas ── */
+.mbd-diya {
+  position: absolute;
+  font-size: 1.2rem;
+  animation: mbd-float 6s ease-in-out infinite;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+.mbd-diya:nth-child(1) { top: 5%;  left: 3%;  animation-delay: 0s; }
+.mbd-diya:nth-child(2) { top: 25%; right: 3%; animation-delay: 2s; }
+.mbd-diya:nth-child(3) { top: 55%; left: 2%;  animation-delay: 4s; }
+.mbd-diya:nth-child(4) { bottom: 15%; right: 3%; animation-delay: 1s; }
+
+/* ── ANIMATIONS ── */
+@keyframes mbd-fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mbd-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mbd-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-15px); }
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════
+     WIDGET HTML
+═══════════════════════════════════════════════ -->
+<div class="mbd-wrap">
+
+  <!-- Decorative backgrounds -->
+  <div class="mbd-bg"></div>
+  <div class="mbd-pattern"></div>
+  <div class="mbd-diya">🪔</div>
+  <div class="mbd-diya">🪔</div>
+  <div class="mbd-diya">🌸</div>
+  <div class="mbd-diya">✨</div>
+
+  <div class="mbd-inner">
+
+    <!-- HERO -->
+    <div class="mbd-hero">
+      <div class="mbd-badge">मराठी भाषा दिन उत्सव</div>
+      <h2 class="mbd-title">मराठी भाषा</h2>
+      <p class="mbd-subtitle">एक समृद्ध भाषेचा प्रवास — शतकानुशतकांची परंपरा</p>
+      <div class="mbd-date-badge">२७ फेब्रुवारी · मराठी राजभाषा दिन</div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="mbd-divider">
+      <span class="mbd-divider-icon">🏵️</span>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="mbd-filters">
+      <button class="mbd-filter-btn mbd-active" data-mbd-filter="all">सर्व</button>
+      <button class="mbd-filter-btn" data-mbd-filter="साहित्य">साहित्य</button>
+      <button class="mbd-filter-btn" data-mbd-filter="भाषा">भाषा</button>
+      <button class="mbd-filter-btn" data-mbd-filter="संस्कृती">संस्कृती</button>
+      <button class="mbd-filter-btn" data-mbd-filter="आधुनिक">आधुनिक काळ</button>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="mbd-timeline" id="mbdTimeline">
+
+      <!-- प्राचीन काळ -->
+      <div class="mbd-era"><span>प्राचीन काळ</span></div>
+
+      <div class="mbd-event" data-mbd-cat="भाषा">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">📜</div>
+          <div class="mbd-year">इ.स. ७०० च्या आसपास</div>
+          <div class="mbd-cat">भाषा उत्पत्ती</div>
+          <div class="mbd-event-title">मराठी भाषेची उत्पत्ती</div>
+          <div class="mbd-desc">महाराष्ट्री प्राकृतातून मराठी भाषेचा जन्म झाला. संस्कृत, पाली व अपभ्रंश भाषांचा प्रभाव असलेली ही भाषा हळूहळू स्वतःचे रूप घेऊ लागली.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🪨</div>
+          <div class="mbd-year">इ.स. १०७८</div>
+          <div class="mbd-cat">शिलालेख</div>
+          <div class="mbd-event-title">श्रवणबेळगोळचा शिलालेख</div>
+          <div class="mbd-desc">मराठीतील सर्वात प्राचीन लिखित नोंद. चामुंडराय यांनी गोमटेश्वराच्या प्रतिष्ठापनेनिमित्त कोरलेला हा शिलालेख मराठी भाषेचे पहिले ऐतिहासिक साक्ष आहे.</div>
+        </div>
+      </div>
+
+      <!-- मध्ययुग -->
+      <div class="mbd-era"><span>मध्ययुग</span></div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">📖</div>
+          <div class="mbd-year">इ.स. १२९०</div>
+          <div class="mbd-cat">संत साहित्य</div>
+          <div class="mbd-event-title">ज्ञानेश्वरी — ज्ञानेश्वर महाराज</div>
+          <div class="mbd-desc">वयाच्या अवघ्या १५ व्या वर्षी ज्ञानेश्वर महाराजांनी भगवद्गीतेवर मराठीत विलक्षण टीका रचली. हे मराठी साहित्याचे सुवर्णपहाट आहे.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="संस्कृती">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🏛️</div>
+          <div class="mbd-year">इ.स. १३ वे शतक</div>
+          <div class="mbd-cat">वारकरी संप्रदाय</div>
+          <div class="mbd-event-title">वारकरी भक्ती चळवळ</div>
+          <div class="mbd-desc">नामदेव, एकनाथ, तुकाराम यांच्यासारख्या संतांनी अभंग, ओव्या व कीर्तनाद्वारे मराठी भाषेत भक्तिसाहित्य फुलवले. सामान्य जनतेपर्यंत धर्म पोचवला.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🌟</div>
+          <div class="mbd-year">इ.स. १४५०</div>
+          <div class="mbd-cat">संत साहित्य</div>
+          <div class="mbd-event-title">एकनाथांचे भारूड</div>
+          <div class="mbd-desc">संत एकनाथ महाराजांनी भारूड, अभंग, पोवाडा इत्यादी विविध साहित्य प्रकारांद्वारे मराठी भाषेला लोकाभिमुख केले.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">✍️</div>
+          <div class="mbd-year">इ.स. १६०८</div>
+          <div class="mbd-cat">संत साहित्य</div>
+          <div class="mbd-event-title">तुकाराम महाराजांचे अभंग</div>
+          <div class="mbd-desc">संत तुकाराम महाराजांनी ४५०० हून अधिक अभंगांद्वारे मराठी भाषेत अध्यात्म, सामाजिक न्याय व जीवनदर्शन मांडले. त्यांचे साहित्य आजही जगभर प्रचलित आहे.</div>
+        </div>
+      </div>
+
+      <!-- शिवकाळ -->
+      <div class="mbd-era"><span>शिवकाळ व पेशवाई</span></div>
+
+      <div class="mbd-event" data-mbd-cat="भाषा">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">⚔️</div>
+          <div class="mbd-year">इ.स. १६३०–१६८०</div>
+          <div class="mbd-cat">राजभाषा</div>
+          <div class="mbd-event-title">छत्रपती शिवाजी महाराजांचे मराठी प्रेम</div>
+          <div class="mbd-desc">छत्रपती शिवाजी महाराजांनी मराठी भाषेला राज्यव्यवहाराचे स्थान दिले. फारसी शब्दांऐवजी मराठी शब्दांचा वापर करण्यासाठी त्यांनी राज्यव्यवहार कोश तयार करवला.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="भाषा">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">📚</div>
+          <div class="mbd-year">इ.स. १८ वे शतक</div>
+          <div class="mbd-cat">साहित्य व इतिहास</div>
+          <div class="mbd-event-title">बखरी लेखन</div>
+          <div class="mbd-desc">पेशवे काळात मराठी गद्याचा विकास झाला. सभासद बखर, पानिपतची बखर यांसारख्या ऐतिहासिक बखरी मराठी गद्य साहित्याचे महत्त्वपूर्ण नमुने आहेत.</div>
+        </div>
+      </div>
+
+      <!-- आधुनिक काळ -->
+      <div class="mbd-era"><span>आधुनिक काळ</span></div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">📰</div>
+          <div class="mbd-year">इ.स. १८३२</div>
+          <div class="mbd-cat">पत्रकारिता</div>
+          <div class="mbd-event-title">दर्पण — पहिले मराठी वृत्तपत्र</div>
+          <div class="mbd-desc">बाळशास्त्री जांभेकर यांनी 'दर्पण' हे मराठीतील पहिले वृत्तपत्र सुरू केले. मराठी पत्रकारितेच्या इतिहासाची सुरुवात याच दिवसापासून झाली.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🎭</div>
+          <div class="mbd-year">इ.स. १८४३</div>
+          <div class="mbd-cat">रंगभूमी</div>
+          <div class="mbd-event-title">पहिले मराठी नाटक</div>
+          <div class="mbd-desc">विष्णुदास भावे यांनी 'सीता स्वयंवर' हे पहिले मराठी नाटक सादर केले. मराठी रंगभूमीची ही सुरुवात होती.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🏫</div>
+          <div class="mbd-year">इ.स. १८४८</div>
+          <div class="mbd-cat">शिक्षण</div>
+          <div class="mbd-event-title">महात्मा ज्योतिबा फुले — शिक्षणाची क्रांती</div>
+          <div class="mbd-desc">ज्योतिबा फुले व सावित्रीबाई फुले यांनी पुणे येथे मुलींसाठी शाळा उघडली. मराठी भाषेत शिक्षण देऊन समाजपरिवर्तनाची ज्योत पेटवली.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🖊️</div>
+          <div class="mbd-year">इ.स. १८७४</div>
+          <div class="mbd-cat">साहित्य</div>
+          <div class="mbd-event-title">केशवसुत — आधुनिक मराठी कवितेचे जनक</div>
+          <div class="mbd-desc">केशव बळवंत ठाकरे (केशवसुत) यांनी मराठी कवितेत आधुनिक वैचारिकता आणली. 'तुतारी' सारख्या कवितांनी समाजाला नवी दिशा दिली.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">⚖️</div>
+          <div class="mbd-year">इ.स. १८९१</div>
+          <div class="mbd-cat">समाजसुधारणा</div>
+          <div class="mbd-event-title">लोकमान्य टिळकांचे केसरी</div>
+          <div class="mbd-desc">लोकमान्य बाळ गंगाधर टिळकांनी 'केसरी' वृत्तपत्राद्वारे मराठी भाषेत स्वातंत्र्याची ज्वाला पेटवली. मराठी पत्रकारितेला राजकीय आयाम दिला.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🌿</div>
+          <div class="mbd-year">इ.स. १८९९</div>
+          <div class="mbd-cat">साहित्य</div>
+          <div class="mbd-event-title">हरि नारायण आपटे — मराठी कादंबरीचा पाया</div>
+          <div class="mbd-desc">ह.ना. आपटे यांनी मराठी कादंबरीला सामाजिक व ऐतिहासिक विषयांची नवी दिशा दिली. त्यांच्या कादंबऱ्या मराठी वाचकांच्या मनात आजही आहेत.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🗳️</div>
+          <div class="mbd-year">इ.स. १ मे १९६०</div>
+          <div class="mbd-cat">महत्त्वाचा दिवस</div>
+          <div class="mbd-event-title">महाराष्ट्र राज्याची स्थापना</div>
+          <div class="mbd-desc">संयुक्त महाराष्ट्र चळवळीनंतर मराठी भाषिकांचे स्वतंत्र राज्य स्थापन झाले. मराठी ही महाराष्ट्राची अधिकृत राजभाषा झाली. या चळवळीत १०५ शहीदांनी बलिदान दिले.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="साहित्य">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🏆</div>
+          <div class="mbd-year">इ.स. १९५०-२०००</div>
+          <div class="mbd-cat">आधुनिक साहित्य</div>
+          <div class="mbd-event-title">मराठी साहित्याचे सुवर्णयुग</div>
+          <div class="mbd-desc">विंदा करंदीकर, पु.ल. देशपांडे, वि.स. खांडेकर, बाबा आमटे यांसारख्या साहित्यिकांनी मराठी साहित्याला आंतरराष्ट्रीय मान्यता मिळवून दिली.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🎬</div>
+          <div class="mbd-year">इ.स. २०वे शतक</div>
+          <div class="mbd-cat">चित्रपट व माध्यमे</div>
+          <div class="mbd-event-title">मराठी चित्रपटसृष्टीचा उदय</div>
+          <div class="mbd-desc">व.पु. काळे, ग.दि. माडगूळकर यांचे गीत आणि 'श्याम', 'सांगत्ये ऐका', 'दुनियादारी' यांसारख्या चित्रपटांनी मराठी भाषेला एक नवा आयाम दिला.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">💫</div>
+          <div class="mbd-year">२७ फेब्रुवारी</div>
+          <div class="mbd-cat">राष्ट्रीय दिन</div>
+          <div class="mbd-event-title">मराठी भाषा दिन</div>
+          <div class="mbd-desc">ज्येष्ठ कवी कुसुमाग्रज (विष्णू वामन शिरवाडकर) यांच्या जन्मदिवशी — २७ फेब्रुवारी रोजी मराठी भाषा दिन साजरा केला जातो. त्यांना 'मराठीचे भूषण' म्हटले जाते.</div>
+        </div>
+      </div>
+
+      <div class="mbd-event" data-mbd-cat="आधुनिक">
+        <div class="mbd-dot"></div>
+        <div class="mbd-card">
+          <div class="mbd-icon">🌐</div>
+          <div class="mbd-year">२१ वे शतक</div>
+          <div class="mbd-cat">डिजिटल युग</div>
+          <div class="mbd-event-title">मराठी डिजिटल क्रांती</div>
+          <div class="mbd-desc">युनिकोड, सोशल मीडिया, ओटीटी माध्यमे यांमुळे मराठी भाषा डिजिटल जगात वेगाने पसरत आहे. मराठी विकिपीडिया, मराठी यूट्यूब चॅनेल्स कोट्यवधी लोकांपर्यंत पोचत आहेत.</div>
+        </div>
+      </div>
+
+    </div><!-- /mbd-timeline -->
+
+    <!-- FOOTER -->
+    <div class="mbd-footer">
+      <div class="mbd-footer-text">🌸 मराठी भाषा अजरामर आहे! 🌸</div>
+      <div class="mbd-footer-sub">Marathi Bhasha Din · 27 February · कुसुमाग्रज जन्मदिन</div>
+    </div>
+
+  </div><!-- /mbd-inner -->
+</div><!-- /mbd-wrap -->
+
+<!-- Scroll to top (outside wrap so position:fixed works in Blogger) -->
+<button class="mbd-scroll-top" id="mbdScrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+(function() {
+  // Scroll animation
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('mbd-visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.mbd-event').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // Filter buttons
+  document.querySelectorAll('.mbd-filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.mbd-filter-btn').forEach(function(b) {
+        b.classList.remove('mbd-active');
+      });
+      btn.classList.add('mbd-active');
+
+      var filter = btn.getAttribute('data-mbd-filter');
+      document.querySelectorAll('.mbd-event').forEach(function(ev) {
+        if (filter === 'all' || ev.getAttribute('data-mbd-cat') === filter) {
+          ev.style.display = 'flex';
+        } else {
+          ev.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Scroll to top
+  var scrollBtn = document.getElementById('mbdScrollTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      scrollBtn.classList.add('mbd-visible');
+    } else {
+      scrollBtn.classList.remove('mbd-visible');
+    }
+  });
+})();
+</script>
